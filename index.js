@@ -74,13 +74,13 @@ async function run() {
             res.send(result)
         })
 
-        app.get('/readCarsData', async (req, res) => {
+        app.get('/readtoolsData', async (req, res) => {
             const limit = req.query.limit
             const email = req.query.email
             console.log(req.query);
             let result;
             if (limit) {
-                result = await toolsdata.find({}).limit(parseInt(limit))
+                result = await toolsdata.aggregate( [ { $sample: {size: 5} } ] ).limit(parseInt(limit))
             }
             else if (email) {
                 result = await toolsdata.find({email:email})
