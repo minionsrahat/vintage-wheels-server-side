@@ -51,10 +51,15 @@ async function run() {
 
 
         // auth
-        app.post('/login', async (req, res) => {
+        app.put('/login', async (req, res) => {
             const {email, name} = req.body
             if(name){
-                const result = await users.insertOne(req.body)
+                const filter = { email: email }
+                const options = { upsert: true };
+                const updateDoc = {
+                    $set: req.body,
+                };
+                const result = await users.updateOne(filter, updateDoc, options);
             }
             const token = jwt.sign(email, process.env.ACCESS_TOKEN);
             res.send({ token })
