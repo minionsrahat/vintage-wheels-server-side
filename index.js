@@ -80,7 +80,8 @@ async function run() {
             console.log(req.query);
             let result;
             if (limit) {
-                result = await toolsdata.aggregate( [ { $sample: {size: 5} } ] ).limit(parseInt(limit))
+                // result = await toolsdata.aggregate( [ { $sample: {size: parseInt(limit)} } ] )
+                result = await toolsdata.find({}).limit(parseInt(limit))
             }
             else if (email) {
                 result = await toolsdata.find({email:email})
@@ -102,9 +103,15 @@ async function run() {
             res.send(await result.toArray())
           
         })
+        app.get('/readUserData', async (req, res) => {
+            const email = req.query.email
+            const query = { email: email }
+            const result = await users.findOne(query)
+            res.send(result)
+        })
        
 
-        app.get('/readSingleCarsData/:id', async (req, res) => {
+        app.get('/readSingleToolsData/:id', async (req, res) => {
 
             const id = req.params.id
             const query = { _id: ObjectId(id) }
