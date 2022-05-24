@@ -68,11 +68,11 @@ async function run() {
         })
 
         app.get('/admin/:email', async (req, res) => {
-            const {email} = req.params
+            const { email } = req.params
             const query = { email: email }
             const result = await users.findOne(query)
-            const isAdmin=result.role==="admin"
-            res.send({isAdmin})
+            const isAdmin = result.role === "admin"
+            res.send({ isAdmin })
         })
 
 
@@ -85,6 +85,11 @@ async function run() {
         app.post('/addreview', async (req, res) => {
             const newreview = req.body;
             const result = await reviews.insertOne(newreview)
+            res.send(result)
+        })
+        app.post('/addproduct', async (req, res) => {
+            const newproduct = req.body;
+            const result = await toolsdata.insertOne(newproduct)
             res.send(result)
         })
 
@@ -116,23 +121,27 @@ async function run() {
             res.send(await result.toArray())
         })
 
+        app.get('/readorders', async (req, res) => {
+           const result = await orders.find({})
+           res.send(await result.toArray())
+        })
+
         app.get('/readUserData', async (req, res) => {
             const email = req.query.email
             const query = { email: email }
             let result;
-            if(email)
-            {
+            if (email) {
                 result = await users.findOne(query)
                 res.send(result)
             }
-            else{
+            else {
                 result = await users.find({})
                 res.send(await result.toArray())
             }
-             
-            
+
+
         })
-      
+
         app.get('/readSingleToolsData/:id', async (req, res) => {
 
             const id = req.params.id
