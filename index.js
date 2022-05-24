@@ -47,6 +47,7 @@ async function run() {
         const database = client.db("vintage-wheels");
         const toolsdata = database.collection("toolsData");
         const users = database.collection("users");
+        const orders = database.collection("orders");
         console.log('Db connected')
 
 
@@ -66,11 +67,9 @@ async function run() {
         })
 
 
-        app.post('/addCarsData', async (req, res) => {
-            const newcar = req.body;
-            // console.log(newcar);
-            const result = await toolsdata.insertOne(newcar)
-            // console.log("add user :" + user);
+        app.post('/addOrder', async (req, res) => {
+            const neworder = req.body;
+            const result = await orders.insertOne(neworder)
             res.send(result)
         })
 
@@ -104,7 +103,6 @@ async function run() {
           
         })
 
-        
         app.get('/readUserData', async (req, res) => {
             const email = req.query.email
             const query = { email: email }
