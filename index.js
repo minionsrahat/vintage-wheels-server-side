@@ -103,6 +103,8 @@ async function run() {
             res.send(await result.toArray())
           
         })
+
+        
         app.get('/readUserData', async (req, res) => {
             const email = req.query.email
             const query = { email: email }
