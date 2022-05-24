@@ -53,8 +53,8 @@ async function run() {
 
         // auth
         app.put('/login', async (req, res) => {
-            const {email, name} = req.body
-            if(name){
+            const { email, name } = req.body
+            if (name) {
                 const filter = { email: email }
                 const options = { upsert: true };
                 const updateDoc = {
@@ -83,7 +83,7 @@ async function run() {
                 result = await toolsdata.find({}).limit(parseInt(limit))
             }
             else if (email) {
-                result = await toolsdata.find({email:email})
+                result = await toolsdata.find({ email: email })
             }
             else {
                 result = await toolsdata.find({})
@@ -96,11 +96,11 @@ async function run() {
             const email = req.query.email
             let result;
             if (email) {
-                result = await toolsdata.find({email:email})
-                
+                result = await toolsdata.find({ email: email })
+
             }
             res.send(await result.toArray())
-          
+
         })
 
         app.get('/readUserData', async (req, res) => {
@@ -109,7 +109,17 @@ async function run() {
             const result = await users.findOne(query)
             res.send(result)
         })
-       
+
+        app.get('/readmyorders', async (req, res) => {
+            const email = req.query.email
+            let result;
+            if (email) {
+                console.log(email);
+                result = await orders.find({ email: email })
+            }
+            res.send(await result.toArray())
+        })
+
 
         app.get('/readSingleToolsData/:id', async (req, res) => {
 
@@ -119,26 +129,25 @@ async function run() {
             res.send(result)
         })
 
-        app.put('/deliverCarData/:id',verifyRequest, async (req, res) => {
+        app.put('/deliverCarData/:id', verifyRequest, async (req, res) => {
             const id = req.params.id
             const filter = { _id: ObjectId(id) }
             const singleCar = await toolsdata.findOne(filter)
             const options = { upsert: true };
             const updateDoc = {
-                $set: {quantity:parseInt(singleCar.quantity)-1},
+                $set: { quantity: parseInt(singleCar.quantity) - 1 },
             };
             const result = await toolsdata.updateOne(filter, updateDoc, options);
             res.send(result)
         })
-
-        app.delete('/deleteCarData/:id',verifyRequest, async (req, res) => {
-            const id=req.params.id
-            const query={_id:ObjectId(id)}
-            const result=await toolsdata.deleteOne(query)
+        app.delete('/deleteCarData/:id', verifyRequest, async (req, res) => {
+            const id = req.params.id
+            const query = { _id: ObjectId(id) }
+            const result = await toolsdata.deleteOne(query)
             res.send(result)
-         })
+        })
 
-        app.post('/updateStock',verifyRequest, async (req, res) => {
+        app.post('/updateStock', verifyRequest, async (req, res) => {
             const id = req.body._id
             const newQuantity = req.body.stock
             console.log(req.body);
@@ -146,7 +155,7 @@ async function run() {
             const singleCar = await toolsdata.findOne(filter)
             const options = { upsert: true };
             const updateDoc = {
-                $set: {quantity:parseInt(singleCar?.quantity)+newQuantity},
+                $set: { quantity: parseInt(singleCar?.quantity) + newQuantity },
             };
             const result = await toolsdata.updateOne(filter, updateDoc, options);
             res.send(result)
