@@ -67,6 +67,14 @@ async function run() {
             res.send({ token })
         })
 
+        app.get('/admin/:email', async (req, res) => {
+            const {email} = req.params
+            const query = { email: email }
+            const result = await users.findOne(query)
+            const isAdmin=result.role==="admin"
+            res.send({isAdmin})
+        })
+
 
         app.post('/addOrder', async (req, res) => {
             const neworder = req.body;
@@ -99,31 +107,6 @@ async function run() {
             res.send(await result.toArray())
         })
 
-        app.get('/readmyCarsData', async (req, res) => {
-            const email = req.query.email
-            let result;
-            if (email) {
-                result = await toolsdata.find({ email: email })
-
-            }
-            res.send(await result.toArray())
-
-        })
-
-        app.get('/readUserData', async (req, res) => {
-            const email = req.query.email
-            const query = { email: email }
-            const result = await users.findOne(query)
-            res.send(result)
-        })
-        app.get('/admin/:email', async (req, res) => {
-            const {email} = req.params
-            const query = { email: email }
-            const result = await users.findOne(query)
-            const isAdmin=result.role==="admin"
-            res.send({isAdmin})
-        })
-
         app.get('/readmyorders', async (req, res) => {
             const email = req.query.email
             let result;
@@ -133,7 +116,23 @@ async function run() {
             res.send(await result.toArray())
         })
 
-
+        app.get('/readUserData', async (req, res) => {
+            const email = req.query.email
+            const query = { email: email }
+            let result;
+            if(email)
+            {
+                result = await users.findOne(query)
+                res.send(result)
+            }
+            else{
+                result = await users.find({})
+                res.send(await result.toArray())
+            }
+             
+            
+        })
+      
         app.get('/readSingleToolsData/:id', async (req, res) => {
 
             const id = req.params.id
