@@ -48,6 +48,7 @@ async function run() {
         const toolsdata = database.collection("toolsData");
         const users = database.collection("users");
         const orders = database.collection("orders");
+        const reviews = database.collection("reviews");
         console.log('Db connected')
 
 
@@ -70,6 +71,12 @@ async function run() {
         app.post('/addOrder', async (req, res) => {
             const neworder = req.body;
             const result = await orders.insertOne(neworder)
+            res.send(result)
+        })
+
+        app.post('/addreview', async (req, res) => {
+            const newreview = req.body;
+            const result = await reviews.insertOne(newreview)
             res.send(result)
         })
 
@@ -114,7 +121,6 @@ async function run() {
             const email = req.query.email
             let result;
             if (email) {
-                console.log(email);
                 result = await orders.find({ email: email })
             }
             res.send(await result.toArray())
