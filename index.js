@@ -116,6 +116,13 @@ async function run() {
             const result = await users.findOne(query)
             res.send(result)
         })
+        app.get('/admin/:email', async (req, res) => {
+            const {email} = req.params
+            const query = { email: email }
+            const result = await users.findOne(query)
+            const isAdmin=result.role==="admin"
+            res.send({isAdmin})
+        })
 
         app.get('/readmyorders', async (req, res) => {
             const email = req.query.email
