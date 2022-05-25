@@ -166,6 +166,25 @@ async function run() {
         })
 
 
+        app.put('/makeadmin/:id', async (req, res) => {
+            const id = req.params.id
+            const filter = { _id: ObjectId(id) }
+            const options = { upsert: false };
+            const updateDoc = {
+                $set: { role:'admin'},
+            };
+            const result = await users.updateOne(filter, updateDoc, options);
+            res.send(result)
+        })
+
+
+
+
+
+
+
+
+
 
 
         app.put('/deliverCarData/:id', verifyRequest, async (req, res) => {
