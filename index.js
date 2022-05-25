@@ -96,7 +96,6 @@ async function run() {
         app.get('/readtoolsData', async (req, res) => {
             const limit = req.query.limit
             const email = req.query.email
-            console.log(req.query);
             let result;
             if (limit) {
                 // result = await toolsdata.aggregate( [ { $sample: {size: parseInt(limit)} } ] )
@@ -150,6 +149,17 @@ async function run() {
             res.send(result)
         })
 
+        app.delete('/deleteToolsData/:id', async (req, res) => {
+            const id = req.params.id
+            console.log(id);
+            const query = { _id: ObjectId(id) }
+            const result = await toolsdata.deleteOne(query)
+            res.send(result)
+        })
+
+
+
+
         app.put('/deliverCarData/:id', verifyRequest, async (req, res) => {
             const id = req.params.id
             const filter = { _id: ObjectId(id) }
@@ -171,7 +181,7 @@ async function run() {
         app.post('/updateStock', verifyRequest, async (req, res) => {
             const id = req.body._id
             const newQuantity = req.body.stock
-            console.log(req.body);
+          
             const filter = { _id: ObjectId(id) }
             const singleCar = await toolsdata.findOne(filter)
             const options = { upsert: true };
