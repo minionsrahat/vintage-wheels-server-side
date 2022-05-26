@@ -54,7 +54,7 @@ async function run() {
 
 
 
-        app.post('/create-payment-intent', verifyJWT, async (req, res) => {
+        app.post('/create-payment-intent', async (req, res) => {
             const service = req.body;
             const price = service.price;
             const amount = price * 100;
@@ -169,6 +169,14 @@ async function run() {
             res.send(result)
         })
 
+        app.get('/readSingleOrderData/:id', async (req, res) => {
+
+            const id = req.params.id
+            const query = { _id: ObjectId(id) }
+            const result = await orders.findOne(query)
+            res.send(result)
+        })
+
         app.delete('/deleteToolsData/:id', async (req, res) => {
             const id = req.params.id
             console.log(id);
@@ -201,6 +209,17 @@ async function run() {
                 $set: { role: 'admin' },
             };
             const result = await users.updateOne(filter, updateDoc, options);
+            res.send(result)
+        })
+
+        app.put('/paymentupdate/:id', async (req, res) => {
+            const id = req.params.id
+            const filter = { _id: ObjectId(id) }
+            const options = { upsert: false };
+            const updateDoc = {
+                $set: req.body,
+            };
+            const result = await orders.updateOne(filter, updateDoc, options);
             res.send(result)
         })
 
