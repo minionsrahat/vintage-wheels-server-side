@@ -6,6 +6,7 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 const ObjectId = require('mongodb').ObjectId
 const app = express()
 const port = process.env.PORT || 5000
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 app.use(cors())
 app.use(express.json())
@@ -51,6 +52,19 @@ async function run() {
         const reviews = database.collection("reviews");
         console.log('Db connected')
 
+
+
+        app.post('/create-payment-intent', verifyJWT, async (req, res) => {
+            const service = req.body;
+            const price = service.price;
+            const amount = price * 100;
+            const paymentIntent = await stripe.paymentIntents.create({
+                amount: amount,
+                currency: 'usd',
+                payment_method_types: ['card']
+            });
+            res.send({ clientSecret: paymentIntent.client_secret })
+        });
 
         // auth
         app.put('/login', async (req, res) => {
@@ -121,9 +135,15 @@ async function run() {
         })
 
         app.get('/readorders', async (req, res) => {
-           const result = await orders.find({})
-           res.send(await result.toArray())
+            const result = await orders.find({})
+            res.send(await result.toArray())
         })
+
+        app.get('/readreviews', async (req, res) => {
+            const result = await reviews.find({})
+            res.send(await result.toArray())
+        })
+
 
         app.get('/readUserData', async (req, res) => {
             const email = req.query.email
@@ -165,13 +185,32 @@ async function run() {
             res.send(result)
         })
 
+        app.delete('/deleteuserorder/:id', verifyRequest, async (req, res) => {
+            const id = req.params.id
+            const query = { _id: ObjectId(id) }
+            const result = await orders.deleteOne(query)
+            res.send(result)
+        })
+
 
         app.put('/makeadmin/:id', async (req, res) => {
             const id = req.params.id
             const filter = { _id: ObjectId(id) }
             const options = { upsert: false };
             const updateDoc = {
-                $set: { role:'admin'},
+                $set: { role: 'admin' },
+            };
+            const result = await users.updateOne(filter, updateDoc, options);
+            res.send(result)
+        })
+
+        app.put('/updateuserprofile/:id', async (req, res) => {
+            const id = req.params.id
+            const updateuser = req.body
+            const filter = { _id: ObjectId(id) }
+            const options = { upsert: false };
+            const updateDoc = {
+                $set: updateuser,
             };
             const result = await users.updateOne(filter, updateDoc, options);
             res.send(result)
@@ -208,7 +247,7 @@ async function run() {
         app.post('/updateStock', verifyRequest, async (req, res) => {
             const id = req.body._id
             const newQuantity = req.body.stock
-          
+
             const filter = { _id: ObjectId(id) }
             const singleCar = await toolsdata.findOne(filter)
             const options = { upsert: true };
