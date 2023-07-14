@@ -1,20 +1,104 @@
 # Welcome to My Vintage Wheels! Website
 
-Live Site Link: [https://vintage-wheels-42c98.web.app](https://vintage-wheels-42c98.web.app).
+Live Site Link: [https://vintage-wheels-42c98.web.app](https://vintage-wheels-42c98.web.app)
+Server Site Link: [https://vintagewheels.onrender.com](https://vintagewheels.onrender.com)
+Client Site Repo: [https://github.com/minionsrahat/Vintage-Wheels-Client](https://github.com/minionsrahat/Vintage-Wheels-Client)
 
-Live Server Site Link: [https://arcane-shore-13420.herokuapp.com/](https://arcane-shore-13420.herokuapp.com/).
+
+Server Site Repo: [https://github.com/minionsrahat/vintage-wheels-server-side](https://github.com/minionsrahat/vintage-wheels-server-side)
+
+
+## Description
+
+Hello, everyone! This is a single-page website for a car manufacturing company. The website provides information about the types of car parts and electronic parts we are selling.
+
+This website has two types of users: normal users and admins. Normal users can buy products, add reviews, and edit their profiles. Admin users have additional privileges such as making other users admins, adding new products, managing product information, managing orders, and managing users.
+
+The website includes a Stripe payment gateway, allowing users to make payments using their cards.
+
+To create this project, I utilized React for the frontend component and Express for the backend. The frontend is built using React, React Bootstrap, and React Router to handle navigation and provide a responsive user interface. React components are responsible for rendering the product information on the homepage and handling user interactions.
+
+For the backend, I set up an Express server to handle API requests and connect to a MongoDB database. The server provides several APIs for loading, deleting, and updating data in the MongoDB database. To ensure secure communication and protect sensitive information, I implemented a JWT authentication system to authenticate and authorize users when accessing protected routes.
+
+By combining React for the frontend and Express for the backend, I have created a robust and secure website that provides an intuitive user experience and seamless integration with the Stripe payment gateway.
+
+If you have any questions or need further information, please feel free to reach out.
 
 
 
-Description:
+## Technology Used
 
-- Hello, everyone,this a single-page website for an Car manufacturing company. This website contains 
-information on what types of cars parts and electronic parts we are selling. 
-- This website has 2 types user. First one normal user who can buy products add review, edit profile etc.
-- Then another users are Admin who can other user admin. Add new product, Manage products information, Manage orders, Manage users.
-- This website contains stripe payment gateway. So user can pay though their card.
-- First of all i create a  project on mongodb database which is a nosql database. Then i connect my created database with my server.i create number of api for loading data, delete data and update data on mongodb.
-- For displaying product informaion in home page i call get api from server.
-- For secure all api on server side i use jwt authentication system.
-- For active navigation link i use NavLink component from react router.
-- Technology i used (React, React bootstrap, React Router, React Icon, Bootstrap cdn, React authentication, Firebase Authentication,React firebase hooks, jwt ,express js, stripe, mongo db)
+- React
+- React Bootstrap
+- React Router
+- React Icons
+- Bootstrap CDN
+- React Authentication
+- Firebase Authentication
+- React Firebase Hooks
+- JWT
+- Express.js
+- Stripe
+- MongoDB
+
+## Client Side Installation
+
+To get started with My Vintage Wheels, follow these steps:
+
+
+```
+$ git clone https://github.com/minionsrahat/Vintage-Wheels-Client
+$ cd project
+$ npm install
+
+```
+
+## Setup 
+
+```
+ Create .env.local file that include:
+
+  * REACT_APP_apiKey
+  * REACT_APP_authDomain
+  * REACT_APP_projectId
+  * REACT_APP_storageBucket
+  * REACT_APP_messagingSenderId
+  * REACT_APP_appId  
+```
+
+## Run Project
+
+```
+$ npm start
+
+```
+
+## Server Side Installation
+
+To get started with My Vintage Wheels, follow these steps:
+
+
+```
+$ git clone https://github.com/minionsrahat/vintage-wheels-server-side
+$ cd project
+$ npm install
+
+```
+
+## Setup 
+
+```
+ Create .env file that include:
+
+  * DB_USER
+  * PASSWORD
+  * ACCESS_TOKEN
+  * STRIPE_SECRET_KEY
+```
+
+## Run Project
+
+```
+$ npm start-dev
+
+```
