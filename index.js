@@ -286,6 +286,9 @@ app.get('/', (req, res) => {
     res.send('Hey i am from server');
 })
 
+app.get('/hello', (req, res) => {
+    res.send('Hey i am from hello server');
+})
 app.listen(port, () => {
     console.log('Server running')
 
